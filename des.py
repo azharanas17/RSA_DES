@@ -3,9 +3,17 @@ import sys
 
 # Convertion function
 # String to binary conversion
-def string2bin(s):
-	res = ''.join(format(ord(i), '08b') for i in s)
-	return res
+def string2bin(text):
+    binary_result = ""
+    for char in text:
+        binary_char = bin(ord(char))[2:].zfill(8)
+        binary_result += binary_char
+
+    # Pad the binary result with zeros to make it a multiple of 64 bits
+    padding_size = (64 - len(binary_result) % 64) % 64
+    binary_result += '0' * padding_size
+
+    return [binary_result[i:i+64] for i in range(0, len(binary_result), 64)]
 
 # Binary to string conversion
 def bin2string(binary_str):
@@ -219,10 +227,11 @@ def permute(k, arr, n):
 	return permutation
 
 def encrypt(pt, key):
-	pt = string2bin(pt)
-	rkb = []
-	rk = []
-	rkb, rk = generate_round_keys(key)
+	# pt = string2bin(pt)
+	# rkb = []
+	# rk = []
+	# rkb, rk = generate_round_keys(key)
+	rkb = key
 	# prit print("string ke bin ", pt)
 
 	# Initial Permutation
@@ -277,11 +286,12 @@ def encrypt(pt, key):
 	return cipher_text
 
 def decrypt(ct, key):
-	ct = hex2bin(ct)
+	# ct = hex2bin(ct)
 
-	rkb = []
-	rk = []
-	rkb, rk = generate_round_keys_decrypt(key)
+	# rkb = []
+	# rk = []
+	# rkb, rk = generate_round_keys_decrypt(key)
+	rkb = key[::-1]
 
 	# Initial Permutation
 	ct = permute(ct, initial_perm, 64)
@@ -333,7 +343,7 @@ def decrypt(ct, key):
 
 def generate_round_keys(key):
     # --hex to binary
-    key = hex2bin(key)
+    # key = hex2bin(key)
 
     # getting 56 bit key from 64 bit using the parity bits
     key = permute(key, keyp, 56)
