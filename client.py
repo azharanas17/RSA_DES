@@ -88,8 +88,7 @@ def receive_messages(client_socket):
                         "target_id": bring_back_to,
                         "data": encrypted_step_2,
                         'length': -1
-                    })
-                        .encode('utf-8'))
+                    }).encode('utf-8'))
 
                 elif data['step'] == 2:
                     decrypted = eval(rsa.decoder(data['data'], private_key, n))
